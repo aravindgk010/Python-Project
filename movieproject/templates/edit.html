@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+    <title>update</title>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <br>
+        <input type="submit" value="update">
+    </form>
+{% endblock %}

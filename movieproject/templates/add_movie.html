@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add movie</title>
+</head>
+<body>
+    <br><br>
+    <div class="container" id="form_container">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <table>
+                <caption>Movie details</caption>
+                <tr>
+                    <td>
+                        <label>Movie name: </label>
+                    </td>
+                    <td>
+                        <input type="text" name="name" placeholder="Enter the movie name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Description: </label>
+                    </td>
+                    <td>
+                        <input type="text" name="desc" placeholder="Enter the movie description">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Year: </label>
+                    </td>
+                    <td>
+                        <input type="text" name="year" placeholder="Enter the release year">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Director name: </label>
+                    </td>
+                    <td>
+                        <input type="text" name="dirc_name" placeholder="Enter the name of the director">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Image: </label>
+                    </td>
+                    <td>
+                        <input type="file" name="img">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}
