@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:150 }}
+    {% else %}
+        Welcome to Thrive haberdashery. Your first and best choice!
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{ category.name }} -Collections -Thrive
+    {% else %}
+        Thrive
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx-auto">
+                    <p class="my_tile"><a href="{% url 'ecommerceapp:allProdCat' %}">Our Collections</a>| {{category.name}}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="mx-auto">
+        {% if category %}
+            <img class="my_image" src="{{ category.image.url }}" alt="{{ category.name }}">
+    </div>
+        <br>
+    <div>
+        <h1 class="text-center my_title">{{ category.name }}</h1>
+        <p class="text-justify">{{ category.description }}</p>
+    </div>
+        {% else %}
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'images/banner_1.png' %}" class="d-block w-100" alt="banner">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/banner_2.png' %}" class="d-block w-100" alt="banner">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/banner_3.png' %}" class="d-block w-100" alt="banner">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center my_title"> Our collections </h1>
+            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed molestie scelerisque diam, id dictum sapien scelerisque sed. Nunc lobortis ligula id venenatis ultrices. Morbi finibus metus vel arcu commodo consequat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed dui dolor, lobortis vel est non, hendrerit fringilla eros.</p>
+        </div>
+        {% endif %}
+    <div class="container">
+        <div class="row mx_auto">
+           {% for product in products.object_list %}
+                <div class="col-md-4 my_bottom_margin">
+                    <div class="card text-center" style="width: 17rem;">
+                        <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" height="300"></a>
+                        <div class="card-body">
+                           <h5 class="card-title">{{ product.name }}</h5>
+                           <p class="card-text">$ {{ product.price }}</p>
+                        </div>
+                    </div>
+                </div>
+           {% endfor %}
+        </div>
+        <div class="mx_auto">
+            {% if products.paginator.num_pages > 1 %}
+                <hr>
+                <div class="text-center">
+                    {% for pg in products.paginator.page_range %}
+                        <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
