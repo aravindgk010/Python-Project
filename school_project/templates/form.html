@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Sky High</title>
+
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <script src="https://kit.fontawesome.com/0687cbebce.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <style>
+        form {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        .checkbox {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            /* padding: 10px; */
+            border: none;
+            width: 50%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-btn a{
+            float: right;
+        }
+
+                    /* The Modal (background) */
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+
+            /* Modal Content */
+            .modal-content {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <div>
+        {% include 'header.html' %}
+    </div>
+    <br><br>
+    <div class="container logout-btn">
+        <a type="button" class="btn btn-warning" href="{% url 'credentials:logout' %}">Logout</a>
+    </div>
+    <div>
+        <form method="POST" id="course-form" onsubmit="return submitForm();">
+            {% csrf_token %}
+            <table>
+                <h4>Student Information</h4>
+                <tr>
+                    <td>
+                        <label for="name">Name</label>
+                    </td>
+                    <td>
+                        <input type="text" id="name" name="name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="dob">Date of Birth</label>
+                    </td>
+                    <td>
+                        <input type="date" id="dob" name="dob" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="age">Age</label>
+                    </td>
+                    <td>
+                        <input type="number" id="age" name="age" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="gender">Gender</label>
+                    </td>
+                    <td>
+                        <select id="gender" name="gender">
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="phone">Phone number</label>
+                    </td>
+                    <td>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="email">Email id</label>
+                    </td>
+                    <td>
+                        <input type="email" id="email" name="email" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="address">Address</label>
+                    </td>
+                    <td>
+                        <textarea name="address" id="address" rows="5"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>Department and Courses</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="department">Department</label>
+                    </td>
+                    <td>
+                        <select id="department" name="department">
+                            <option value="">Select Department</option>
+                            <option value="computer_science">Computer Science</option>
+                            <option value="physics">Physics</option>
+                            <option value="commerce">Commerce</option>
+                            <option value="biology">Biology</option>
+                            <option value="literature">Literature</option>
+                            <option value="mathematics">Mathematics</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="course">Course</label>
+                    </td>
+                    <td>
+                        <select name="course" id="course">
+                            <option value="">Select Course</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>Purpose and Materials</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="purpose">Purpose</label>
+                    </td>
+                    <td>
+                        <select id="purpose" name="purpose">
+                            <option value="">Select Purpose</option>
+                            <option value="enquiry">Enquiry</option>
+                            <option value="order">Place Order</option>
+                            <option value="return">Return</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="materials">Materials Provided</label>
+                    </td>
+                    <td>
+                        <div class="checkbox-group">
+                            <label class="checkbox">
+                                <input type="checkbox" id="debit_note" name="materials[]" value="Debit Note Book">
+                                    Debit Note Book
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" id="pen" name="materials[]" value="Pen">
+                                    Pen
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" id="exam_papers" name="materials[]" value="Exam Papers">
+                                    Exam Papers
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn btn-primary" onclick="return showAlert();">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>  
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Form submitted. Click <a href="/" target="_blank">here</a> to go home</p>
+            </div>
+        </div>  
+    </div><br><br><br><br>
+    <div>
+        <footer class="bg-dark text-light py-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>About</h5>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Contact</h5>
+                        <p>Phone: +1 234 567 890</p>
+                        <p>Email: example@example.com</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Follow us on</h5>
+                        <a href="https://www.facebook.com/" class="btn btn-light btn-sm mx-1">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/" class="btn btn-light btn-sm mx-1">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com/i/flow/login" class="btn btn-light btn-sm mx-1">
+                            <i class="fa-brands fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+<script>
+        // Object to store departments and their corresponding courses
+    const coursesByDepartment = {
+    computer_science: ["BSc Computer Science", "MSc Computer Science", "MCA", "BCA"],
+    physics: ["BSc Physics", "MSc Physics", "PhD Physics"],
+    mathematics: ["BSc Mathematics", "MSc Mathematics", "PhD Mathematics"],
+    commerce: ["BCom", "MCom", "BBA", "MBA"],
+    chemistry: ["BSc Chemistry", "MSc Chemistry", "PhD Chemistry"],
+    biology: ["BSc Biology", "MSc Biology", "PhD Biology"],
+    literature: ["BA Literature", "MA Literature", "PhD Literature"],
+    };
+
+    // Function to update course dropdown based on department selection
+    function updateCourses() {
+    const selectedDepartment = document.getElementById("department").value;
+    const courseDropdown = document.getElementById("course");
+
+    // Clear existing options
+    courseDropdown.innerHTML = "";
+
+    // Add default option
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Select Course";
+    courseDropdown.appendChild(defaultOption);
+
+    // Add courses for selected department
+    if (selectedDepartment) {
+        coursesByDepartment[selectedDepartment].forEach((course) => {
+        const option = document.createElement("option");
+        option.value = course;
+        option.textContent = course;
+        courseDropdown.appendChild(option);
+        });
+    }
+    }
+
+    // Attach event listener to department dropdown
+    document.getElementById("department").addEventListener("change", updateCourses);
+
+    // Update courses on page load
+    updateCourses();
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function showAlert() {
+        if (confirm("Ready to submit?")) {
+            modal.style.display = "block";
+            document.getElementById("course-form").reset();
+            return true;
+  }
+}
+    
+           
+</script>
+</html>
+
+
